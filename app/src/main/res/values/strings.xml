@@ -35,4 +35,7 @@
     <!--  menu main  -->
     <string name="setting">Setting</string>
     <string name="logout">Logout</string>
+
+    <!--  detail activity  -->
+    <string name="detail_story">Detail Story</string>
 </resources>
