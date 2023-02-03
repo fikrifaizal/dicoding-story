@@ -32,4 +32,7 @@
     <string name="dummy_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
     <string name="dummy_date">January 01, 2022</string>
 
+    <!--  menu main  -->
+    <string name="setting">Setting</string>
+    <string name="logout">Logout</string>
 </resources>
