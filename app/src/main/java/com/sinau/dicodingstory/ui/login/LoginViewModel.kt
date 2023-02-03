@@ -1,6 +1,21 @@
 package com.sinau.dicodingstory.ui.login
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.sinau.dicodingstory.data.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel: ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val authRepository: AuthRepository): ViewModel() {
+
+    fun getUserLogin(email: String, password: String) =
+        authRepository.getUserLogin(email, password)
+
+    fun saveToken(token: String) {
+        viewModelScope.launch {
+            authRepository.saveToken(token)
+        }
+    }
 }
