@@ -1,5 +1,28 @@
 <resources>
     <string name="app_name">DicodingStory</string>
+    <string name="dicoding_logo">logo of Dicoding</string>
+
+    <!--  custom view  -->
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="wrong_email">Invalid email address</string>
+    <string name="wrong_password">Password must be at least 8 characters</string>
+
+    <!--  edit text view  -->
+    <string name="name">Name</string>
+    <string name="name_hint">Your name</string>
+
+    <!--  login activity  -->
+    <string name="illus_login">Illustration Image for Login Page</string>
+    <string name="login_welcome">Welcome back!</string>
+    <string name="login_dialog">We\'re so excited to see you again! Let\'s start exploring student story again</string>
+    <string name="login_button">Log In</string>
+    <string name="text_register_dialog">Need an account?</string>
+    <string name="text_register_button">Register here</string>
+
+    <!--  register activity  -->
+    <string name="illus_register">Illustration Image for Login Page</string>
+    <string name="register_title">Create an account</string>
+    <string name="register_button">Register</string>
+    <string name="text_login_button">Already have an account?</string>
 </resources>
