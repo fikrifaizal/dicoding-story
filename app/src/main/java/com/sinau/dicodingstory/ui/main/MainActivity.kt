@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         token = intent.getStringExtra(EXTRA_TOKEN).toString()
 
-        getStory()
+        getStories()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -60,15 +61,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getStory() {
+    private fun getStories() {
+        binding.loadingLayout.visibility = View.VISIBLE
         lifecycleScope.launchWhenResumed {
             launch {
                 mainViewModel.getStories(token).collect { result ->
                     result.onSuccess {
+                        binding.loadingLayout.visibility = View.GONE
                         showRecyclerView(it.listStory)
                     }
 
                     result.onFailure {
+                        binding.loadingLayout.visibility = View.GONE
                         Toast.makeText(this@MainActivity, "Failed to parsing json", Toast.LENGTH_LONG)
                             .show()
                     }

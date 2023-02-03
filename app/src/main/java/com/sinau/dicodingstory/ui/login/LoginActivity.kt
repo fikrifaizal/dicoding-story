@@ -3,6 +3,7 @@ package com.sinau.dicodingstory.ui.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -38,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginHandler() {
+        binding.loadingLayout.visibility = View.VISIBLE
         val email = binding.etEmail.text.toString().trim()
         val password = binding.etPassword.text.toString().trim()
 
@@ -47,8 +49,6 @@ class LoginActivity : AppCompatActivity() {
                     result.onSuccess {
                         it.loginResult.token.let { token ->
                             loginViewModel.saveToken(token)
-                            Toast.makeText(this@LoginActivity, "Login success", Toast.LENGTH_SHORT)
-                                .show()
 
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             intent.putExtra(EXTRA_TOKEN, token)
@@ -58,6 +58,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     result.onFailure {
+                        binding.loadingLayout.visibility = View.GONE
                         Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT)
                             .show()
                     }

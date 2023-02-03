@@ -3,6 +3,7 @@ package com.sinau.dicodingstory.ui.register
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -36,6 +37,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerHandler() {
+        binding.loadingLayout.visibility = View.VISIBLE
         val name = binding.etName.text.toString().trim()
         val email = binding.etEmail.text.toString().trim()
         val password = binding.etPassword.text.toString().trim()
@@ -53,6 +55,7 @@ class RegisterActivity : AppCompatActivity() {
                     }
 
                     result.onFailure {
+                        binding.loadingLayout.visibility = View.GONE
                         Toast.makeText(this@RegisterActivity, "Register failed", Toast.LENGTH_SHORT)
                             .show()
                     }
