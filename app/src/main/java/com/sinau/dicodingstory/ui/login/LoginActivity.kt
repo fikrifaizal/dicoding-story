@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.sinau.dicodingstory.databinding.ActivityLoginBinding
 import com.sinau.dicodingstory.ui.main.MainActivity
+import com.sinau.dicodingstory.ui.main.MainActivity.Companion.EXTRA_TOKEN
 import com.sinau.dicodingstory.ui.register.RegisterActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -50,6 +51,7 @@ class LoginActivity : AppCompatActivity() {
                                 .show()
 
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                            intent.putExtra(EXTRA_TOKEN, token)
                             startActivity(intent)
                             finish()
                         }
