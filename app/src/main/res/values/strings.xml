@@ -25,4 +25,11 @@
     <string name="register_title">Create an account</string>
     <string name="register_button">Register</string>
     <string name="text_login_button">Already have an account?</string>
+
+    <!--  story item  -->
+    <string name="image_desc">Image of Student Story</string>
+    <string name="dummy_name">Fikri Faizal</string>
+    <string name="dummy_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="dummy_date">January 01, 2022</string>
+
 </resources>
