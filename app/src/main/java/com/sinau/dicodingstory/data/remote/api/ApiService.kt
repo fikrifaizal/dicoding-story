@@ -1,5 +1,9 @@
 package com.sinau.dicodingstory.data.remote.api
 
+import com.sinau.dicodingstory.data.remote.response.DetailStoryResponse
+import com.sinau.dicodingstory.data.remote.response.LoginResponse
+import com.sinau.dicodingstory.data.remote.response.RegisterResponse
+import com.sinau.dicodingstory.data.remote.response.StoriesResponse
 import retrofit2.http.*
 
 interface ApiService {
