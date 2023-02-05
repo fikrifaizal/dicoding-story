@@ -13,7 +13,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:contentDescription="@string/illus_login"
-        android:src="@drawable/illus_login_500"
+        android:src="@drawable/illus_login_200"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
