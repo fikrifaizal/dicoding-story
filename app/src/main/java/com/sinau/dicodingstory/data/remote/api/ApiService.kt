@@ -1,9 +1,7 @@
 package com.sinau.dicodingstory.data.remote.api
 
-import com.sinau.dicodingstory.data.remote.response.DetailStoryResponse
-import com.sinau.dicodingstory.data.remote.response.LoginResponse
-import com.sinau.dicodingstory.data.remote.response.RegisterResponse
-import com.sinau.dicodingstory.data.remote.response.StoriesResponse
+import com.sinau.dicodingstory.data.remote.response.*
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 interface ApiService {
@@ -34,4 +32,12 @@ interface ApiService {
         @Path("id") id: String,
         @Header("Authorization") token: String
     ): DetailStoryResponse
+
+    @Multipart
+    @POST("stories")
+    suspend fun upLoadStory(
+        @Header("Authorization") token: String,
+        @Part("description") description: String,
+        @Part file: MultipartBody.Part
+    ): UploadResponse
 }
