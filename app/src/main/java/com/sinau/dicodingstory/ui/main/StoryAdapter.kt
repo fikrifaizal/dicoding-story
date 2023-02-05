@@ -10,12 +10,10 @@ import com.sinau.dicodingstory.data.remote.response.ListStoryItem
 import com.sinau.dicodingstory.databinding.StoryItemBinding
 import com.sinau.dicodingstory.ui.detail.DetailActivity
 import com.sinau.dicodingstory.ui.detail.DetailActivity.Companion.EXTRA_ID
-import com.sinau.dicodingstory.ui.detail.DetailActivity.Companion.EXTRA_TOKEN
 
-class StoryAdapter(private val listStory: List<ListStoryItem>, token: String) : RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
-    private var bearerToken = "Bearer $token"
+class StoryAdapter(private val listStory: List<ListStoryItem>) : RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
 
-    class ViewHolder(private val binding: StoryItemBinding, private val token: String) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: StoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(context: Context, story: ListStoryItem) {
             binding.apply {
                 Glide.with(context)
@@ -29,7 +27,6 @@ class StoryAdapter(private val listStory: List<ListStoryItem>, token: String) : 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailActivity::class.java)
                     itemView.context.startActivity(intent)
-                    intent.putExtra(EXTRA_TOKEN, token)
                     intent.putExtra(EXTRA_ID, story.id)
                     itemView.context.startActivity(intent)
                 }
@@ -38,7 +35,7 @@ class StoryAdapter(private val listStory: List<ListStoryItem>, token: String) : 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(StoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false), bearerToken)
+        return ViewHolder(StoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun getItemCount(): Int = listStory.size
