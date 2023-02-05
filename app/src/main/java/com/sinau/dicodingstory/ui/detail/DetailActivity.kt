@@ -17,6 +17,8 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private val detailViewModel: DetailViewModel by viewModels()
 
+    private var token: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
@@ -25,8 +27,7 @@ class DetailActivity : AppCompatActivity() {
         val extra = intent.extras
         if (extra != null) {
             val id = extra.getString(EXTRA_ID).toString()
-            val token = extra.getString(EXTRA_TOKEN).toString()
-            getStory(id, token)
+            getStory(id)
         } else {
             Toast.makeText(this@DetailActivity, "Failed to load detail story", Toast.LENGTH_LONG)
                 .show()
@@ -40,9 +41,13 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
 
-    private fun getStory(id: String, token: String) {
+    private fun getStory(id: String) {
         lifecycleScope.launchWhenResumed {
             launch {
+                detailViewModel.getToken().collect { getToken ->
+                    if (!getToken.isNullOrEmpty()) token = getToken
+                }
+
                 detailViewModel.getDetailStory(id, token).collect { result ->
                     result.onSuccess {
                         showBinding(it.story)
@@ -71,6 +76,5 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_ID = "extra_id"
-        const val EXTRA_TOKEN = "extra_token"
     }
 }
