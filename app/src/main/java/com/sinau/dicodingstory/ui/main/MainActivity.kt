@@ -14,6 +14,7 @@ import com.sinau.dicodingstory.R
 import com.sinau.dicodingstory.data.remote.response.ListStoryItem
 import com.sinau.dicodingstory.databinding.ActivityMainBinding
 import com.sinau.dicodingstory.ui.login.LoginActivity
+import com.sinau.dicodingstory.ui.upload.UploadActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -22,16 +23,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel: MainViewModel by viewModels()
 
-    private var token: String = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        token = intent.getStringExtra(EXTRA_TOKEN).toString()
+        val token = intent.getStringExtra(EXTRA_TOKEN).toString()
 
-        getStories()
+        getStories(token)
+
+        binding.fabUpload.setOnClickListener {
+            val intent = Intent(this@MainActivity, UploadActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -61,8 +65,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getStories() {
-        binding.loadingLayout.visibility = View.VISIBLE
+    private fun getStories(token: String) {
         lifecycleScope.launchWhenResumed {
             launch {
                 mainViewModel.getStories(token).collect { result ->
@@ -84,7 +87,7 @@ class MainActivity : AppCompatActivity() {
     private fun showRecyclerView(listStory: List<ListStoryItem>) {
         binding.rvStories.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = StoryAdapter(listStory, token)
+            adapter = StoryAdapter(listStory)
             setHasFixedSize(true)
         }
     }
