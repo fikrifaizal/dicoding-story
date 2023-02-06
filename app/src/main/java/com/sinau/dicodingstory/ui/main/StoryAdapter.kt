@@ -26,7 +26,6 @@ class StoryAdapter(private val listStory: List<ListStoryItem>) : RecyclerView.Ad
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailActivity::class.java)
-                    itemView.context.startActivity(intent)
                     intent.putExtra(EXTRA_ID, story.id)
                     itemView.context.startActivity(intent)
                 }

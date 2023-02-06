@@ -24,14 +24,10 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val extra = intent.extras
-        if (extra != null) {
-            val id = extra.getString(EXTRA_ID).toString()
-            getStory(id)
-        } else {
-            Toast.makeText(this@DetailActivity, "Failed to load detail story", Toast.LENGTH_LONG)
-                .show()
-        }
+        val id = intent.getStringExtra(EXTRA_ID).toString()
+
+        getToken()
+        getStory(id)
 
         supportActionBar?.title = getString(R.string.detail_story)
     }
@@ -41,13 +37,19 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
 
-    private fun getStory(id: String) {
+    private fun getToken() {
         lifecycleScope.launchWhenResumed {
             launch {
                 detailViewModel.getToken().collect { getToken ->
                     if (!getToken.isNullOrEmpty()) token = getToken
                 }
+            }
+        }
+    }
 
+    private fun getStory(id: String) {
+        lifecycleScope.launchWhenResumed {
+            launch {
                 detailViewModel.getDetailStory(id, token).collect { result ->
                     result.onSuccess {
                         showBinding(it.story)
