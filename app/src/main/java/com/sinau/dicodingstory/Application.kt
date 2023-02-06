@@ -1,4 +1,4 @@
-package com.sinau.dicodingstory.ui
+package com.sinau.dicodingstory
 
 import dagger.hilt.android.HiltAndroidApp
 
