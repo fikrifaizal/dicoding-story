@@ -38,4 +38,13 @@
 
     <!--  detail activity  -->
     <string name="detail_story">Detail Story</string>
+
+    <!--  upload activity  -->
+    <string name="image_thumbnail">Uploaded Image Thumbnail</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="upload_dialog">Let people know about your story</string>
+    <string name="upload_hint">Write a description…</string>
+    <string name="upload">Upload</string>
+    <string name="upload_story">Upload Story</string>
 </resources>
