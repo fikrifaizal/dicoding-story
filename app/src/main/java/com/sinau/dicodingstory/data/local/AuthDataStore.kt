@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class AuthDataStore @Inject constructor(private val dataStore: DataStore<Preferences>){
+class AuthDataStore @Inject constructor(private val dataStore: DataStore<Preferences>) {
 
     fun getToken(): Flow<String?> {
         return dataStore.data.map { preferences ->
@@ -29,6 +29,6 @@ class AuthDataStore @Inject constructor(private val dataStore: DataStore<Prefere
     }
 
     companion object {
-        private val TOKEN_KEY= stringPreferencesKey("token")
+        private val TOKEN_KEY = stringPreferencesKey("token")
     }
 }

@@ -34,7 +34,6 @@ class EmailEditText : AppCompatEditText {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        hint = R.string.email.toString()
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
     }
 
@@ -42,6 +41,7 @@ class EmailEditText : AppCompatEditText {
         emailIcon = ContextCompat.getDrawable(context, R.drawable.ic_email_24) as Drawable
         compoundDrawablePadding = 12
         setIconsDrawable(emailIcon)
+        setHint(R.string.email)
 
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {

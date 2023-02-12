@@ -33,7 +33,11 @@ class StoryRepository @Inject constructor(private val apiService: ApiService) {
         }
     }.flowOn(Dispatchers.IO)
 
-    fun uploadStory(token: String, description: String, file: MultipartBody.Part): Flow<Result<UploadResponse>> = flow {
+    fun uploadStory(
+        token: String,
+        description: String,
+        file: MultipartBody.Part
+    ): Flow<Result<UploadResponse>> = flow {
         try {
             val response = apiService.upLoadStory(generateBearerToken(token), description, file)
             emit(Result.success(response))

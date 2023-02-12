@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashscreenViewModel @Inject constructor(private val authRepository: AuthRepository): ViewModel() {
+class SplashscreenViewModel @Inject constructor(private val authRepository: AuthRepository) :
+    ViewModel() {
 
     fun getToken(): Flow<String?> = authRepository.getToken()
 }

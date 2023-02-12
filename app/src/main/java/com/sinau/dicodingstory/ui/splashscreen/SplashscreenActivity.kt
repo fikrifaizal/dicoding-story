@@ -2,15 +2,17 @@ package com.sinau.dicodingstory.ui.splashscreen
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.sinau.dicodingstory.databinding.ActivitySplashscreenBinding
 import com.sinau.dicodingstory.ui.login.LoginActivity
 import com.sinau.dicodingstory.ui.main.MainActivity
 import com.sinau.dicodingstory.ui.main.MainActivity.Companion.EXTRA_TOKEN
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -24,8 +26,14 @@ class SplashscreenActivity : AppCompatActivity() {
         binding = ActivitySplashscreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
+
         lifecycleScope.launchWhenCreated {
             launch {
+                delay(1000)
                 splashscreenViewModel.getToken().collect { token ->
                     if (token.isNullOrEmpty()) {
                         val intent = Intent(this@SplashscreenActivity, LoginActivity::class.java)

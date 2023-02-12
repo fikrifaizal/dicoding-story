@@ -34,7 +34,6 @@ class PasswordEditText : AppCompatEditText {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        hint = R.string.password.toString()
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
         transformationMethod = PasswordTransformationMethod.getInstance()
     }
@@ -43,6 +42,7 @@ class PasswordEditText : AppCompatEditText {
         passwordIcon = ContextCompat.getDrawable(context, R.drawable.ic_lock_24) as Drawable
         compoundDrawablePadding = 12
         setIconsDrawable(passwordIcon)
+        setHint(R.string.password)
 
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {

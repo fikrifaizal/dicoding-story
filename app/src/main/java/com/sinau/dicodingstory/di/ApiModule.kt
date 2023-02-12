@@ -20,9 +20,11 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideDataStore(@ApplicationContext applicationContext: Context): DataStore<Preferences> = applicationContext.dataStore
+    fun provideDataStore(@ApplicationContext applicationContext: Context): DataStore<Preferences> =
+        applicationContext.dataStore
 
     @Singleton
     @Provides
-    fun provideAuthPreference(dataStore: DataStore<Preferences>): AuthDataStore = AuthDataStore(dataStore)
+    fun provideAuthPreference(dataStore: DataStore<Preferences>): AuthDataStore =
+        AuthDataStore(dataStore)
 }
