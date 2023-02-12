@@ -1,11 +1,11 @@
 package com.sinau.dicodingstory.data.remote.api
 
 import androidx.viewbinding.BuildConfig
-import com.sinau.dicodingstory.BuildConfig as BC
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.sinau.dicodingstory.BuildConfig as BC
 
 class ApiConfig {
     companion object {

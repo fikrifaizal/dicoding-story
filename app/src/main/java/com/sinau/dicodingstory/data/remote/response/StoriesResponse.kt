@@ -2,7 +2,7 @@ package com.sinau.dicodingstory.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class StoriesResponse (
+data class StoriesResponse(
 
     @field:SerializedName("listStory")
     val listStory: List<ListStoryItem>,
