@@ -128,7 +128,7 @@
         android:id="@+id/loading_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:alpha="0"
         android:background="@color/transparent_madison"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
