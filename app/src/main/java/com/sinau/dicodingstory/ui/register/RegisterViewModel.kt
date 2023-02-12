@@ -6,7 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(private val authRepository: AuthRepository): ViewModel() {
+class RegisterViewModel @Inject constructor(private val authRepository: AuthRepository) :
+    ViewModel() {
 
-    fun saveUserRegister(name: String, email: String, password: String) = authRepository.saveUserRegister(name, email, password)
+    fun saveUserRegister(name: String, email: String, password: String) =
+        authRepository.saveUserRegister(name, email, password)
 }

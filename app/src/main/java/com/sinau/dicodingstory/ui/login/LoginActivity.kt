@@ -1,16 +1,16 @@
 package com.sinau.dicodingstory.ui.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.sinau.dicodingstory.databinding.ActivityLoginBinding
 import com.sinau.dicodingstory.ui.main.MainActivity
 import com.sinau.dicodingstory.ui.main.MainActivity.Companion.EXTRA_TOKEN
 import com.sinau.dicodingstory.ui.register.RegisterActivity
+import com.sinau.dicodingstory.utils.animateLoading
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -39,11 +39,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginHandler() {
-        binding.loadingLayout.visibility = View.VISIBLE
+        showLoading(true)
         val email = binding.etEmail.text.toString().trim()
         val password = binding.etPassword.text.toString().trim()
 
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.launchWhenCreated {
             launch {
                 loginViewModel.getUserLogin(email, password).collect { result ->
                     result.onSuccess {
@@ -58,12 +58,20 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     result.onFailure {
-                        binding.loadingLayout.visibility = View.GONE
+                        showLoading(false)
                         Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
             }
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.apply {
+            loadingLayout.animateLoading(isLoading)
+            btnLogin.isEnabled = !isLoading
+            btnTextRegister.isEnabled = !isLoading
         }
     }
 }
