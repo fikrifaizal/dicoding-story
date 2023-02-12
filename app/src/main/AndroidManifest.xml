@@ -9,7 +9,7 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/dicoding_logo_small"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.DicodingStory"
@@ -45,7 +45,8 @@
 
         <activity
             android:name=".ui.splashscreen.SplashscreenActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
