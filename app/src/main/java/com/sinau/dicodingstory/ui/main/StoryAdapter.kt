@@ -11,9 +11,11 @@ import com.sinau.dicodingstory.databinding.StoryItemBinding
 import com.sinau.dicodingstory.ui.detail.DetailActivity
 import com.sinau.dicodingstory.ui.detail.DetailActivity.Companion.EXTRA_ID
 
-class StoryAdapter(private val listStory: List<ListStoryItem>) : RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
+class StoryAdapter(private val listStory: List<ListStoryItem>) :
+    RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
 
-    class ViewHolder(private val binding: StoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: StoryItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(context: Context, story: ListStoryItem) {
             binding.apply {
                 Glide.with(context)
@@ -34,7 +36,13 @@ class StoryAdapter(private val listStory: List<ListStoryItem>) : RecyclerView.Ad
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(StoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ViewHolder(
+            StoryItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount(): Int = listStory.size

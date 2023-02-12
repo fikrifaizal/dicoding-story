@@ -47,4 +47,8 @@
     <string name="upload_hint">Write a description…</string>
     <string name="upload">Upload</string>
     <string name="upload_story">Upload Story</string>
+
+    <!--  error data  -->
+    <string name="illus_error">Illustration Image for Error</string>
+    <string name="error_dialog">Failed to show data\nPlease try again later</string>
 </resources>

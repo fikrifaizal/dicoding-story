@@ -8,6 +8,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_stories"
+        android:alpha="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/story_item" />
@@ -16,7 +17,7 @@
         android:id="@+id/loading_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:alpha="0"
         android:background="@color/transparent_madison"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,8 +29,24 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:indeterminateTint="@color/mauve_taupe"/>
+            android:indeterminateTint="@color/snake_fruit"/>
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_error"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:text="@string/error_dialog"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:textColor="@color/madison"
+        android:textStyle="bold"
+        app:drawableTopCompat="@drawable/illus_error_200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_upload"

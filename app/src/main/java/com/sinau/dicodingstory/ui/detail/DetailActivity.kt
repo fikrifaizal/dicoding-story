@@ -1,14 +1,18 @@
 package com.sinau.dicodingstory.ui.detail
 
-import androidx.appcompat.app.AppCompatActivity
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.sinau.dicodingstory.R
 import com.sinau.dicodingstory.data.remote.response.Story
 import com.sinau.dicodingstory.databinding.ActivityDetailBinding
+import com.sinau.dicodingstory.utils.animateLoading
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -38,7 +42,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun getToken() {
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.launchWhenCreated {
             launch {
                 detailViewModel.getToken().collect { getToken ->
                     if (!getToken.isNullOrEmpty()) token = getToken
@@ -48,15 +52,23 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun getStory(id: String) {
-        lifecycleScope.launchWhenResumed {
+        showLoading(true)
+        lifecycleScope.launchWhenCreated {
             launch {
                 detailViewModel.getDetailStory(id, token).collect { result ->
                     result.onSuccess {
+                        showLoading(false)
                         showBinding(it.story)
                     }
 
                     result.onFailure {
-                        Toast.makeText(this@DetailActivity, "Failed to parsing json", Toast.LENGTH_SHORT)
+                        showLoading(false)
+                        onErrorData()
+                        Toast.makeText(
+                            this@DetailActivity,
+                            "Failed to parsing json",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }
                 }
@@ -73,7 +85,25 @@ class DetailActivity : AppCompatActivity() {
             tvName.text = story.name
             tvDescription.text = story.description
             tvDate.text = story.createdAt
+
+            val img = ObjectAnimator.ofFloat(cvImage, View.ALPHA, 1f).setDuration(250)
+            val name = ObjectAnimator.ofFloat(tvName, View.ALPHA, 1f).setDuration(250)
+            val desc = ObjectAnimator.ofFloat(tvDescription, View.ALPHA, 1f).setDuration(250)
+            val date = ObjectAnimator.ofFloat(tvDate, View.ALPHA, 1f).setDuration(250)
+
+            AnimatorSet().apply {
+                playSequentially(img, name, desc, date)
+                start()
+            }
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.loadingLayout.animateLoading(isLoading)
+    }
+
+    private fun onErrorData() {
+        binding.tvError.animateLoading(true)
     }
 
     companion object {

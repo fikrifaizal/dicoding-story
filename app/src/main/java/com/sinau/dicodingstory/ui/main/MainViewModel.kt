@@ -11,7 +11,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val authRepository: AuthRepository, private val storyRepository: StoryRepository): ViewModel() {
+class MainViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
+    private val storyRepository: StoryRepository
+) : ViewModel() {
 
     fun clearToken() {
         viewModelScope.launch {
