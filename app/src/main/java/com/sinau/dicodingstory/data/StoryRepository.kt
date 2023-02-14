@@ -23,6 +23,16 @@ class StoryRepository @Inject constructor(private val apiService: ApiService) {
         }
     }.flowOn(Dispatchers.IO)
 
+    fun getStoriesMaps(token: String): Flow<Result<StoriesResponse>> = flow {
+        try {
+            val response = apiService.getAllStories(generateBearerToken(token), 1)
+            emit(Result.success(response))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emit(Result.failure(e))
+        }
+    }.flowOn(Dispatchers.IO)
+
     fun getDetailStory(id: String, token: String): Flow<Result<DetailStoryResponse>> = flow {
         try {
             val response = apiService.getDetailStory(id, generateBearerToken(token))

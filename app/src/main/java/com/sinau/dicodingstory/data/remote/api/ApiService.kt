@@ -24,7 +24,8 @@ interface ApiService {
 
     @GET("stories")
     suspend fun getAllStories(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Query("location") location: Int? = null
     ): StoriesResponse
 
     @GET("stories/{id}")
