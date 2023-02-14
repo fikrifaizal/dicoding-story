@@ -1,4 +1,4 @@
-package com.sinau.dicodingstory.ui.main
+package com.sinau.dicodingstory.ui.home
 
 import android.content.Context
 import android.content.Intent
