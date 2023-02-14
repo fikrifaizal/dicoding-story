@@ -6,18 +6,13 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sinau.dicodingstory.R
-import com.sinau.dicodingstory.data.remote.response.ListStoryItem
 import com.sinau.dicodingstory.databinding.ActivityMainBinding
 import com.sinau.dicodingstory.ui.login.LoginActivity
-import com.sinau.dicodingstory.ui.upload.UploadActivity
-import com.sinau.dicodingstory.utils.animateLoading
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -29,14 +24,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val token = intent.getStringExtra(EXTRA_TOKEN).toString()
+        val navView: BottomNavigationView = binding.navView
 
-        getStories(token)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        binding.fabUpload.setOnClickListener {
-            val intent = Intent(this@MainActivity, UploadActivity::class.java)
-            startActivity(intent)
-        }
+        navView.setupWithNavController(navController)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -47,7 +40,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_logout -> {
-                showLoading(true)
                 mainViewModel.clearToken()
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
                 startActivity(intent)
@@ -57,55 +49,6 @@ class MainActivity : AppCompatActivity() {
             else -> {
                 super.onOptionsItemSelected(item)
             }
-        }
-    }
-
-    private fun getStories(token: String) {
-        showLoading(true)
-        onErrorData(false)
-
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                mainViewModel.getStories(token).collect { result ->
-                    result.onSuccess {
-                        showLoading(false)
-                        showRecyclerView()
-                        updateRecyclerView(it.listStory)
-                    }
-
-                    result.onFailure {
-                        showLoading(false)
-                        onErrorData(true)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun showRecyclerView() {
-        binding.rvStories.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            setHasFixedSize(true)
-        }
-    }
-
-    private fun updateRecyclerView(listStory: List<ListStoryItem>) {
-        val firstState = binding.rvStories.layoutManager?.onSaveInstanceState()
-        binding.rvStories.adapter = StoryAdapter(listStory)
-        binding.rvStories.layoutManager?.onRestoreInstanceState(firstState)
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.apply {
-            loadingLayout.animateLoading(isLoading)
-            fabUpload.isEnabled = !isLoading
-        }
-    }
-
-    private fun onErrorData(isError: Boolean) {
-        binding.apply {
-            rvStories.alpha = if (isError) 0F else 1F
-            tvError.animateLoading(isError)
         }
     }
 
