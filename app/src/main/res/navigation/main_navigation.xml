@@ -2,18 +2,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_main"
+    android:id="@+id/main_navigation"
     app:startDestination="@+id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.sinau.dicodingstory.ui.home.HomeFragment"
-        android:label="fragment_home"
+        android:label="@string/home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_maps"
         android:name="com.sinau.dicodingstory.ui.maps.MapsFragment"
-        android:label="fragment_maps"
+        android:label="@string/maps"
         tools:layout="@layout/fragment_maps" />
 </navigation>
