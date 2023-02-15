@@ -1,5 +1,12 @@
 package com.sinau.dicodingstory.data
 
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.sinau.dicodingstory.data.local.entity.StoryEntity
+import com.sinau.dicodingstory.data.local.room.StoryDatabase
+import com.sinau.dicodingstory.data.remote.StoryRemoteMediator
 import com.sinau.dicodingstory.data.remote.api.ApiService
 import com.sinau.dicodingstory.data.remote.response.DetailStoryResponse
 import com.sinau.dicodingstory.data.remote.response.StoriesResponse
@@ -11,21 +18,22 @@ import kotlinx.coroutines.flow.flowOn
 import okhttp3.MultipartBody
 import javax.inject.Inject
 
-class StoryRepository @Inject constructor(private val apiService: ApiService) {
+@ExperimentalPagingApi
+class StoryRepository @Inject constructor(private val storyDatabase: StoryDatabase, private val apiService: ApiService) {
 
-    fun getStories(token: String): Flow<Result<StoriesResponse>> = flow {
-        try {
-            val response = apiService.getAllStories(generateBearerToken(token))
-            emit(Result.success(response))
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(Result.failure(e))
-        }
-    }.flowOn(Dispatchers.IO)
+    fun getStories(token: String): Flow<PagingData<StoryEntity>> {
+        return Pager(
+            config = PagingConfig(pageSize = 5),
+            remoteMediator = StoryRemoteMediator(storyDatabase, apiService, generateBearerToken(token)),
+            pagingSourceFactory = {
+                storyDatabase.storyDao().getAllStory()
+            }
+        ).flow
+    }
 
     fun getStoriesMaps(token: String): Flow<Result<StoriesResponse>> = flow {
         try {
-            val response = apiService.getAllStories(generateBearerToken(token), 1)
+            val response = apiService.getAllStories(generateBearerToken(token), location = 1)
             emit(Result.success(response))
         } catch (e: Exception) {
             e.printStackTrace()

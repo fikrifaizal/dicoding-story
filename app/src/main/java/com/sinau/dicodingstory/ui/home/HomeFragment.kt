@@ -2,16 +2,20 @@ package com.sinau.dicodingstory.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sinau.dicodingstory.data.remote.response.ListStoryItem
+import com.sinau.dicodingstory.adapter.LoadingStateAdapter
+import com.sinau.dicodingstory.adapter.StoryAdapter
+import com.sinau.dicodingstory.data.local.entity.StoryEntity
 import com.sinau.dicodingstory.databinding.FragmentHomeBinding
 import com.sinau.dicodingstory.ui.main.MainActivity
 import com.sinau.dicodingstory.ui.upload.UploadActivity
@@ -20,11 +24,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
+@ExperimentalPagingApi
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding
     private val homeViewModel: HomeViewModel by viewModels()
+
+    private var storyAdapter = StoryAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +46,7 @@ class HomeFragment : Fragment() {
 
         val token = requireActivity().intent.getStringExtra(MainActivity.EXTRA_TOKEN).toString()
 
+        showRecyclerView()
         getStories(token)
 
         binding?.fabUpload?.setOnClickListener {
@@ -53,38 +61,31 @@ class HomeFragment : Fragment() {
     }
 
     private fun getStories(token: String) {
-        showLoading(true)
-        onErrorData(false)
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                homeViewModel.getStories(token).collect { result ->
-                    result.onSuccess {
-                        showLoading(false)
-                        showRecyclerView()
-                        updateRecyclerView(it.listStory)
-                    }
-
-                    result.onFailure {
-                        showLoading(false)
-                        onErrorData(true)
-                    }
-                }
-            }
+        /**
+        * remove lifecycleScope to avoid refreshing data on pagination after page 1
+         * removed lifecycle : lifecycleScope and repeatOnLifecycle(Lifecycle.State.RESUMED)
+        */
+        homeViewModel.getStories(token).observe(viewLifecycleOwner) {
+            updateRecyclerView(it)
         }
     }
 
     private fun showRecyclerView() {
         binding?.rvStories?.apply {
             layoutManager = LinearLayoutManager(activity)
+            adapter = storyAdapter.withLoadStateFooter(
+                footer = LoadingStateAdapter {
+                    storyAdapter.retry()
+                }
+            )
             setHasFixedSize(true)
         }
     }
 
-    private fun updateRecyclerView(listStory: List<ListStoryItem>) {
+    private fun updateRecyclerView(listStory: PagingData<StoryEntity>) {
         binding?.rvStories?.apply {
             val firstState = layoutManager?.onSaveInstanceState()
-            adapter = StoryAdapter(listStory)
+            storyAdapter.submitData(lifecycle, listStory)
             layoutManager?.onRestoreInstanceState(firstState)
         }
     }
