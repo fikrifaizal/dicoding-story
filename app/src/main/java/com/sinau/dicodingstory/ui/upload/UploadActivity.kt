@@ -13,6 +13,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.ExperimentalPagingApi
 import com.sinau.dicodingstory.R
 import com.sinau.dicodingstory.databinding.ActivityUploadBinding
 import com.sinau.dicodingstory.utils.MediaUtils.createCustomTempFile
@@ -28,6 +29,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 @AndroidEntryPoint
+@ExperimentalPagingApi
 class UploadActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUploadBinding
     private val uploadViewModel: UploadViewModel by viewModels()

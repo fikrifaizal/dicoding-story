@@ -1,6 +1,7 @@
 package com.sinau.dicodingstory.ui.detail
 
 import androidx.lifecycle.ViewModel
+import androidx.paging.ExperimentalPagingApi
 import com.sinau.dicodingstory.data.AuthRepository
 import com.sinau.dicodingstory.data.StoryRepository
 import com.sinau.dicodingstory.data.remote.response.DetailStoryResponse
@@ -9,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
+@ExperimentalPagingApi
 class DetailViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val storyRepository: StoryRepository
