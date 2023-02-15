@@ -51,4 +51,9 @@
     <!--  error data  -->
     <string name="illus_error">Illustration Image for Error</string>
     <string name="error_dialog">Failed to show data\nPlease try again later</string>
+    <string name="retry">Retry</string>
+
+    <!--  bottom navigation  -->
+    <string name="home">Home</string>
+    <string name="maps">Maps</string>
 </resources>
