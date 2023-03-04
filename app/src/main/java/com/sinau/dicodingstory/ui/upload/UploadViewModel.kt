@@ -8,6 +8,7 @@ import com.sinau.dicodingstory.data.remote.response.UploadResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,7 +22,10 @@ class UploadViewModel @Inject constructor(
 
     fun uploadStory(
         token: String,
-        description: String,
-        file: MultipartBody.Part
-    ): Flow<Result<UploadResponse>> = storyRepository.uploadStory(token, description, file)
+        description: RequestBody,
+        file: MultipartBody.Part,
+        lat: RequestBody?,
+        lon: RequestBody?
+    ): Flow<Result<UploadResponse>> =
+        storyRepository.uploadStory(token, description, file, lat, lon)
 }

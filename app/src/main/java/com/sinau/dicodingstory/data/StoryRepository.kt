@@ -16,15 +16,23 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 @ExperimentalPagingApi
-class StoryRepository @Inject constructor(private val storyDatabase: StoryDatabase, private val apiService: ApiService) {
+class StoryRepository @Inject constructor(
+    private val storyDatabase: StoryDatabase,
+    private val apiService: ApiService
+) {
 
     fun getStories(token: String): Flow<PagingData<StoryEntity>> {
         return Pager(
             config = PagingConfig(pageSize = 5),
-            remoteMediator = StoryRemoteMediator(storyDatabase, apiService, generateBearerToken(token)),
+            remoteMediator = StoryRemoteMediator(
+                storyDatabase,
+                apiService,
+                generateBearerToken(token)
+            ),
             pagingSourceFactory = {
                 storyDatabase.storyDao().getAllStory()
             }
@@ -53,11 +61,14 @@ class StoryRepository @Inject constructor(private val storyDatabase: StoryDataba
 
     fun uploadStory(
         token: String,
-        description: String,
-        file: MultipartBody.Part
+        description: RequestBody,
+        file: MultipartBody.Part,
+        lat: RequestBody?,
+        lon: RequestBody?
     ): Flow<Result<UploadResponse>> = flow {
         try {
-            val response = apiService.upLoadStory(generateBearerToken(token), description, file)
+            val response =
+                apiService.upLoadStory(generateBearerToken(token), description, file, lat, lon)
             emit(Result.success(response))
         } catch (e: Exception) {
             e.printStackTrace()
