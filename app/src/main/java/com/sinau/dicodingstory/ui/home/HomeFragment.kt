@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sinau.dicodingstory.adapter.LoadingStateAdapter
@@ -49,9 +50,14 @@ class HomeFragment : Fragment() {
         showRecyclerView()
         getStories(token)
 
-        binding?.fabUpload?.setOnClickListener {
-            val intent = Intent(requireContext(), UploadActivity::class.java)
-            startActivity(intent)
+        binding?.apply {
+            swipeRefresh.setOnRefreshListener {
+                storyAdapter.refresh()
+            }
+            fabUpload.setOnClickListener {
+                val intent = Intent(requireContext(), UploadActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -61,16 +67,43 @@ class HomeFragment : Fragment() {
     }
 
     private fun getStories(token: String) {
-        /**
+        /*
         * remove lifecycleScope to avoid refreshing data on pagination after page 1
-         * removed lifecycle : lifecycleScope and repeatOnLifecycle(Lifecycle.State.RESUMED)
+         * removed -> lifecycleScope and repeatOnLifecycle(Lifecycle.State.RESUMED)
+         * found the solution -> use Lifecycle.State.STARTED and don't put recycler view setup in this lifecycle
         */
-        homeViewModel.getStories(token).observe(viewLifecycleOwner) {
-            updateRecyclerView(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.getStories(token).observe(viewLifecycleOwner) {
+                    updateRecyclerView(it)
+                }
+            }
         }
     }
 
     private fun showRecyclerView() {
+        storyAdapter.addLoadStateListener { state ->
+            when (state.source.refresh) {
+                is LoadState.NotLoading -> {
+                    // List is empty
+                    if (state.append.endOfPaginationReached && storyAdapter.itemCount < 1) {
+                        onErrorData(true)
+                    } else {
+                        binding?.swipeRefresh?.isRefreshing = false
+                    }
+                }
+                is LoadState.Error -> {
+                    // list is error
+                    onErrorData(true)
+                }
+                else -> {
+                    // list not empty
+                    onErrorData(false)
+                    binding?.swipeRefresh?.isRefreshing = false
+                }
+            }
+        }
+
         binding?.rvStories?.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = storyAdapter.withLoadStateFooter(
@@ -87,13 +120,6 @@ class HomeFragment : Fragment() {
             val firstState = layoutManager?.onSaveInstanceState()
             storyAdapter.submitData(lifecycle, listStory)
             layoutManager?.onRestoreInstanceState(firstState)
-        }
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding?.apply {
-            loadingLayout.animateLoading(isLoading)
-            fabUpload.isEnabled = !isLoading
         }
     }
 

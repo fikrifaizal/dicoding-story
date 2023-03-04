@@ -20,7 +20,8 @@ object DatabaseModule {
     fun provideStoryDao(storyDatabase: StoryDatabase): StoryDao = storyDatabase.storyDao()
 
     @Provides
-    fun provideRemoteKeysDao(storyDatabase: StoryDatabase): RemoteKeysDao = storyDatabase.remoteKeysDao()
+    fun provideRemoteKeysDao(storyDatabase: StoryDatabase): RemoteKeysDao =
+        storyDatabase.remoteKeysDao()
 
     @Singleton
     @Provides
