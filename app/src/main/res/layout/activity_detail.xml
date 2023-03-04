@@ -45,8 +45,7 @@
                 android:alpha="0"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="16dp"
-                android:textColor="@color/madison"
-                android:textSize="21sp"
+                style="@style/TextMadison.ExtraMedium"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cv_image"
@@ -59,8 +58,7 @@
                 android:alpha="0"
                 android:layout_marginTop="2dp"
                 android:layout_marginHorizontal="16dp"
-                android:textColor="@color/madison"
-                android:textSize="14sp"
+                style="@style/TextMadison.Medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name"
@@ -73,8 +71,7 @@
                 android:alpha="0"
                 android:layout_marginTop="4dp"
                 android:layout_marginHorizontal="16dp"
-                android:textColor="@color/madison"
-                android:textSize="12sp"
+                style="@style/TextMadison.Small"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_description"
                 tools:text="@string/dummy_date" />
@@ -87,9 +84,8 @@
         android:layout_height="wrap_content"
         android:alpha="0"
         android:text="@string/error_dialog"
-        android:textSize="14sp"
         android:gravity="center"
-        android:textColor="@color/madison"
+        style="@style/TextMadison.Medium"
         android:textStyle="bold"
         app:drawableTopCompat="@drawable/illus_error_200"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -111,8 +107,6 @@
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:indeterminateTint="@color/snake_fruit"/>
+            style="@style/ProgressBarStyle" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

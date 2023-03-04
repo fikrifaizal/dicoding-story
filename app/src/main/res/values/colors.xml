@@ -18,6 +18,5 @@
 
     <!--  color palettes from madison  -->
     <color name="madison_900">#1B2A39</color>
-    <color name="madison_500">#58728D</color>
     <color name="transparent_madison">#4A2D3E50</color>
 </resources>
