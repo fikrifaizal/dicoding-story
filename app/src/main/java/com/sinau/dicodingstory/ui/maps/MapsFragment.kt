@@ -63,6 +63,11 @@ class MapsFragment : Fragment() {
         getStoriesLocation()
     }
 
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) getMyLocation()
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -87,7 +92,7 @@ class MapsFragment : Fragment() {
 
     private fun getStoriesLocation() {
         viewLifecycleOwner.lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mapsViewModel.getStoriesMaps(token).collect { result ->
                     result.onSuccess {
                         it.listStory.forEach { storyItem ->
@@ -108,20 +113,15 @@ class MapsFragment : Fragment() {
         }
     }
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) getMyLocation()
-        }
-
     private fun getMyLocation() {
         if (ContextCompat.checkSelfPermission(
                 requireContext().applicationContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             mMap.isMyLocationEnabled = true
         } else {
-            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
         }
     }
 
